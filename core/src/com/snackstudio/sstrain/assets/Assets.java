@@ -1,4 +1,4 @@
-package com.fteams.sstrain.assets;
+package com.snackstudio.sstrain.assets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -10,10 +10,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
-import com.fteams.sstrain.entities.BaseMetadata;
-import com.fteams.sstrain.entities.Beatmap;
-import com.fteams.sstrain.entities.BeatmapGroup;
-import com.fteams.sstrain.entities.Metadata;
+import com.snackstudio.sstrain.entities.BaseMetadata;
+import com.snackstudio.sstrain.entities.Beatmap;
+import com.snackstudio.sstrain.entities.BeatmapGroup;
+import com.snackstudio.sstrain.entities.Metadata;
 
 import java.util.HashMap;
 import java.util.List;

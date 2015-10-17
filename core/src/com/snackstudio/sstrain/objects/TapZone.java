@@ -1,4 +1,4 @@
-package com.fteams.sstrain.objects;
+package com.snackstudio.sstrain.objects;
 
 import com.badlogic.gdx.math.Vector2;
 

@@ -1,9 +1,9 @@
-package com.fteams.sstrain.controller;
+package com.snackstudio.sstrain.controller;
 
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Disposable;
-import com.fteams.sstrain.config.GlobalConfiguration;
+import com.snackstudio.sstrain.config.GlobalConfiguration;
 
 public class Crossfader implements Disposable {
     private static final float fadeRate = 0.25f;

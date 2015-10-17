@@ -1,4 +1,4 @@
-package com.fteams.sstrain.util;
+package com.snackstudio.sstrain.util;
 
 public enum Accuracy {
     PERFECT,

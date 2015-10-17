@@ -1,9 +1,9 @@
-package com.fteams.sstrain;
+package com.snackstudio.sstrain;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.fteams.sstrain.screens.SplashScreen;
+import com.snackstudio.sstrain.screens.SplashScreen;
 
 public class SSTrain extends Game {
 

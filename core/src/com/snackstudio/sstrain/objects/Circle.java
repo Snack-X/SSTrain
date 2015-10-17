@@ -1,13 +1,13 @@
-package com.fteams.sstrain.objects;
+package com.snackstudio.sstrain.objects;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.fteams.sstrain.assets.Assets;
-import com.fteams.sstrain.config.GlobalConfiguration;
-import com.fteams.sstrain.entities.Note;
-import com.fteams.sstrain.entities.Results;
-import com.fteams.sstrain.util.Accuracy;
-import com.fteams.sstrain.util.SongUtils;
+import com.snackstudio.sstrain.assets.Assets;
+import com.snackstudio.sstrain.config.GlobalConfiguration;
+import com.snackstudio.sstrain.entities.Note;
+import com.snackstudio.sstrain.entities.Results;
+import com.snackstudio.sstrain.util.Accuracy;
+import com.snackstudio.sstrain.util.SongUtils;
 
 public class Circle implements Comparable<Circle> {
 

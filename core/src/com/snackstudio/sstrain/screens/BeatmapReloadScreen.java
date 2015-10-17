@@ -1,4 +1,4 @@
-package com.fteams.sstrain.screens;
+package com.snackstudio.sstrain.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -8,8 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
-import com.fteams.sstrain.assets.Assets;
-import com.fteams.sstrain.config.GlobalConfiguration;
+import com.snackstudio.sstrain.assets.Assets;
+import com.snackstudio.sstrain.config.GlobalConfiguration;
 
 public class BeatmapReloadScreen implements Screen {
     private Image backgroundImage = new Image(Assets.mainMenuBackgroundTexture);

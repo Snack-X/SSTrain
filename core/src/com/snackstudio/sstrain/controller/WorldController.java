@@ -1,21 +1,21 @@
-package com.fteams.sstrain.controller;
+package com.snackstudio.sstrain.controller;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.fteams.sstrain.World;
-import com.fteams.sstrain.assets.Assets;
-import com.fteams.sstrain.config.GlobalConfiguration;
-import com.fteams.sstrain.entities.Results;
-import com.fteams.sstrain.objects.AccuracyMarker;
-import com.fteams.sstrain.objects.AccuracyPopup;
-import com.fteams.sstrain.objects.Circle;
-import com.fteams.sstrain.objects.TapZone;
-import com.fteams.sstrain.screens.ResultsScreen;
-import com.fteams.sstrain.util.Accuracy;
-import com.fteams.sstrain.util.SongUtils;
+import com.snackstudio.sstrain.World;
+import com.snackstudio.sstrain.assets.Assets;
+import com.snackstudio.sstrain.config.GlobalConfiguration;
+import com.snackstudio.sstrain.entities.Results;
+import com.snackstudio.sstrain.objects.AccuracyMarker;
+import com.snackstudio.sstrain.objects.AccuracyPopup;
+import com.snackstudio.sstrain.objects.Circle;
+import com.snackstudio.sstrain.objects.TapZone;
+import com.snackstudio.sstrain.screens.ResultsScreen;
+import com.snackstudio.sstrain.util.Accuracy;
+import com.snackstudio.sstrain.util.SongUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

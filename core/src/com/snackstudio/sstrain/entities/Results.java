@@ -1,9 +1,9 @@
-package com.fteams.sstrain.entities;
+package com.snackstudio.sstrain.entities;
 
 
-import com.fteams.sstrain.config.GlobalConfiguration;
-import com.fteams.sstrain.util.Accuracy;
-import com.fteams.sstrain.util.SongUtils;
+import com.snackstudio.sstrain.config.GlobalConfiguration;
+import com.snackstudio.sstrain.util.Accuracy;
+import com.snackstudio.sstrain.util.SongUtils;
 
 public class Results {
     public static Integer score;

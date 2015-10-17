@@ -1,8 +1,8 @@
-package com.fteams.sstrain.config;
+package com.snackstudio.sstrain.config;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.fteams.sstrain.util.SongUtils;
+import com.snackstudio.sstrain.util.SongUtils;
 
 public class GlobalConfiguration {
 

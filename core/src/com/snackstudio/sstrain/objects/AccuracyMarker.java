@@ -1,4 +1,4 @@
-package com.fteams.sstrain.objects;
+package com.snackstudio.sstrain.objects;
 
 // represents the osu-like marker which displays the time
 // delay between the expected tap and the actual tap

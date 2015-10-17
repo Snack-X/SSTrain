@@ -1,4 +1,4 @@
-package com.fteams.sstrain.screens;
+package com.snackstudio.sstrain.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -11,8 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.fteams.sstrain.assets.Assets;
-import com.fteams.sstrain.config.GlobalConfiguration;
+import com.snackstudio.sstrain.assets.Assets;
+import com.snackstudio.sstrain.config.GlobalConfiguration;
 
 public class SplashScreen implements Screen {
     private Texture texture = new Texture(Gdx.files.internal("bigimages/splash.png"));

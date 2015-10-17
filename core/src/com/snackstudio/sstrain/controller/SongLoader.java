@@ -1,9 +1,9 @@
-package com.fteams.sstrain.controller;
+package com.snackstudio.sstrain.controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
-import com.fteams.sstrain.assets.Assets;
+import com.snackstudio.sstrain.assets.Assets;
 
 public class SongLoader {
     private static final String SONGFILE_PREFIX = "sstrain/soundfiles/";
