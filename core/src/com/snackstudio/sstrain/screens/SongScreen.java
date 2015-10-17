@@ -1,14 +1,14 @@
-package com.snackstudio.sstrain.screens;
+package com.fteams.sstrain.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.snackstudio.sstrain.World;
-import com.snackstudio.sstrain.controller.WorldController;
-import com.snackstudio.sstrain.entities.Results;
-import com.snackstudio.sstrain.renderer.WorldRenderer;
+import com.fteams.sstrain.World;
+import com.fteams.sstrain.controller.WorldController;
+import com.fteams.sstrain.entities.Results;
+import com.fteams.sstrain.renderer.WorldRenderer;
 
 public class SongScreen implements Screen, InputProcessor {
     private World world;

@@ -1,4 +1,4 @@
-package com.snackstudio.sstrain.entities;
+package com.fteams.sstrain.entities;
 
 public class Note {
     public Long id;

@@ -1,4 +1,4 @@
-package com.snackstudio.sstrain.screens;
+package com.fteams.sstrain.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -14,8 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.snackstudio.sstrain.assets.Assets;
-import com.snackstudio.sstrain.config.GlobalConfiguration;
+import com.fteams.sstrain.assets.Assets;
+import com.fteams.sstrain.config.GlobalConfiguration;
 
 public class MainMenuScreen implements Screen, InputProcessor {
     private Stage stage = new Stage();

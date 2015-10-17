@@ -1,21 +1,21 @@
-package com.snackstudio.sstrain.controller;
+package com.fteams.sstrain.controller;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.snackstudio.sstrain.World;
-import com.snackstudio.sstrain.assets.Assets;
-import com.snackstudio.sstrain.config.GlobalConfiguration;
-import com.snackstudio.sstrain.entities.Results;
-import com.snackstudio.sstrain.objects.AccuracyMarker;
-import com.snackstudio.sstrain.objects.AccuracyPopup;
-import com.snackstudio.sstrain.objects.Circle;
-import com.snackstudio.sstrain.objects.TapZone;
-import com.snackstudio.sstrain.screens.ResultsScreen;
-import com.snackstudio.sstrain.util.Accuracy;
-import com.snackstudio.sstrain.util.SongUtils;
+import com.fteams.sstrain.World;
+import com.fteams.sstrain.assets.Assets;
+import com.fteams.sstrain.config.GlobalConfiguration;
+import com.fteams.sstrain.entities.Results;
+import com.fteams.sstrain.objects.AccuracyMarker;
+import com.fteams.sstrain.objects.AccuracyPopup;
+import com.fteams.sstrain.objects.Circle;
+import com.fteams.sstrain.objects.TapZone;
+import com.fteams.sstrain.screens.ResultsScreen;
+import com.fteams.sstrain.util.Accuracy;
+import com.fteams.sstrain.util.SongUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -439,12 +439,12 @@ public class WorldController implements Music.OnCompletionListener {
 
     private int getTapZoneForCoordinates(int screenX, int screenY, float ppuX, float ppuY, int width, int height, int pointer) {
         float centerX = world.offsetX + width / 2;
-        float centerY = world.offsetY + height * 0.25f;
+        float centerY = world.offsetY + height * 0.20f;
 
         float relativeX = (screenX - centerX) / ppuX;
         float relativeY = (-screenY + centerY) / ppuY;
 
-        float circleRadius = 400 * 0.0625f;
+        float circleRadius = 400 * 0.065f;
 
         int matchedId = -1;
         for (TapZone zone : tapZones) {
@@ -460,6 +460,7 @@ public class WorldController implements Music.OnCompletionListener {
     }
 
     private void hit(int matchedId) {
+        boolean hit = false;
         for (Circle mark : circles) {
             if (!mark.waiting) {
                 continue;
@@ -474,6 +475,8 @@ public class WorldController implements Music.OnCompletionListener {
                 if (accuracy == Accuracy.NONE)
                     continue;
 
+                hit = true;
+
                 playTapSoundForAccuracy(accuracy);
                 processAccuracy(accuracy, null, false);
 
@@ -484,6 +487,9 @@ public class WorldController implements Music.OnCompletionListener {
                 break;
             }
 
+        }
+        if (!hit) {
+            Assets.noHitTapSound.play(GlobalConfiguration.feedbackVolume / 100f);
         }
     }
 
@@ -506,6 +512,7 @@ public class WorldController implements Music.OnCompletionListener {
                     playTapSoundForAccuracy(accuracy);
                 }
                 accuracyPopups.add(new AccuracyPopup(accuracy, mark.hitTime < 0));
+                accuracyMarkers.add(new AccuracyMarker(mark.hitTime));
                 processAccuracy(mark.accuracy, null, false);
                 accuracyList.add(accuracy);
                 // 1 mark per release
@@ -557,12 +564,12 @@ public class WorldController implements Music.OnCompletionListener {
 
     private int getTapZoneForCoordinatesNoMarking(float screenX, float screenY, float ppuX, float ppuY, int width, int height, int pointer) {
         float centerX = world.offsetX + width / 2;
-        float centerY = world.offsetY + height * 0.25f;
+        float centerY = world.offsetY + height * 0.20f;
 
         float relativeX = (screenX - centerX) / ppuX;
         float relativeY = (-screenY + centerY) / ppuY;
 
-        float circleRadius = 400 * 0.0625f;
+        float circleRadius = 400 * 0.065f;
 
         int matchedId = -1;
         for (TapZone zone : tapZones) {

@@ -1,6 +1,6 @@
-package com.snackstudio.sstrain.objects;
+package com.fteams.sstrain.objects;
 
-import com.snackstudio.sstrain.util.Accuracy;
+import com.fteams.sstrain.util.Accuracy;
 
 // represents the accuracy pop-up that pops up on screen on tap
 // and reads PERFECT / GREAT / NICE / BAD / MISS

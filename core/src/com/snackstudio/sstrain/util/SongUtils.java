@@ -1,4 +1,4 @@
-package com.snackstudio.sstrain.util;
+package com.fteams.sstrain.util;
 
 public class SongUtils {
     public final static Long NOTE_TYPE_NORMAL = 1l;

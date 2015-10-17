@@ -1,14 +1,14 @@
-package com.snackstudio.sstrain;
+package com.fteams.sstrain;
 
 import com.badlogic.gdx.utils.Array;
-import com.snackstudio.sstrain.assets.Assets;
-import com.snackstudio.sstrain.config.GlobalConfiguration;
-import com.snackstudio.sstrain.entities.Note;
-import com.snackstudio.sstrain.objects.AccuracyMarker;
-import com.snackstudio.sstrain.objects.AccuracyPopup;
-import com.snackstudio.sstrain.objects.Circle;
-import com.snackstudio.sstrain.objects.TapZone;
-import com.snackstudio.sstrain.util.SongUtils;
+import com.fteams.sstrain.assets.Assets;
+import com.fteams.sstrain.config.GlobalConfiguration;
+import com.fteams.sstrain.entities.Note;
+import com.fteams.sstrain.objects.AccuracyMarker;
+import com.fteams.sstrain.objects.AccuracyPopup;
+import com.fteams.sstrain.objects.Circle;
+import com.fteams.sstrain.objects.TapZone;
+import com.fteams.sstrain.util.SongUtils;
 
 public class World {
     int width;
@@ -39,7 +39,7 @@ public class World {
         float h = 400;
         float w = 600;
 
-        float radius = h * 0.0625f;
+        float radius = h * 0.065f;
 
         Double noteSpeed = SongUtils.getSpeedFromConfig(GlobalConfiguration.noteSpeed) / 1000.0;
 
@@ -51,7 +51,8 @@ public class World {
 
         for (Note notesInfo : Assets.selectedBeatmap.notes) {
 
-            Circle mark = new Circle((notesInfo.endPos - 3) * 100, 0, notesInfo, noteSpeed, delay);
+            x = (notesInfo.endPos - 3) * radius * 4;
+            Circle mark = new Circle(x, 0, notesInfo, noteSpeed, delay);
             circles.add(mark);
         }
 //        System.out.println("Loaded: " + circles.size + " notes");

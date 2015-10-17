@@ -1,4 +1,4 @@
-package com.snackstudio.sstrain.entities;
+package com.fteams.sstrain.entities;
 
 public class BaseMetadata {
     public String songName;

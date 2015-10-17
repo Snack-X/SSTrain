@@ -1,7 +1,9 @@
-package com.snackstudio.sstrain.entities;
+package com.fteams.sstrain.entities;
 
 
-import com.snackstudio.sstrain.util.Accuracy;
+import com.fteams.sstrain.config.GlobalConfiguration;
+import com.fteams.sstrain.util.Accuracy;
+import com.fteams.sstrain.util.SongUtils;
 
 public class Results {
     public static Integer score;
@@ -49,23 +51,41 @@ public class Results {
         return 0f;
     }
 
-    // fixed time windows for registering taps - speed depen
     public static Accuracy getAccuracyFor(float timing) {
         // Perfect
-        // instead of windows deferred from the note speed, they seem to use a constant window for all the difficulties.
-
-        if (Math.abs(timing) < 0.080f) {
+        float zone = SongUtils.getSpeedFromConfig(GlobalConfiguration.noteSpeed) / 1000f;
+        if (Math.abs(timing) < zone * 0.1f) {
             return Accuracy.PERFECT;
         }
-        if (Math.abs(timing) <  0.110f) {
+        if (Math.abs(timing) < zone * 0.175f) {
             return Accuracy.GREAT;
         }
-        if (Math.abs(timing) <  0.180f) {
+        if (Math.abs(timing) < zone * 0.20f) {
             return Accuracy.NICE;
         }
-        if (Math.abs(timing) <  0.200f) {
+        if (Math.abs(timing) < zone * 0.25f) {
             return Accuracy.BAD;
         }
         return Accuracy.MISS;
     }
+
+    // holds and swipes have bigger windows
+    public static Accuracy getAccuracyForSwipesAndHolds(float timing) {
+        // Perfect
+//        float zone = SongUtils.getSpeedFromConfig(GlobalConfiguration.noteSpeed) / 1000f;
+//        if (Math.abs(timing) < zone * 0.25f) {
+//            return Accuracy.PERFECT;
+//        }
+//        if (Math.abs(timing) < zone * 0.3f) {
+//            return Accuracy.GREAT;
+//        }
+//        if (Math.abs(timing) < zone * 0.35f) {
+//            return Accuracy.NICE;
+//        }
+//        if (Math.abs(timing) < zone * 0.5f) {
+//            return Accuracy.BAD;
+//        }
+        return getAccuracyFor(timing * SWIPE_HOLD_MULTIPLIER);
+    }
+    public final static float SWIPE_HOLD_MULTIPLIER = 0.5f;
 }

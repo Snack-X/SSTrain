@@ -1,4 +1,4 @@
-package com.snackstudio.sstrain.screens;
+package com.fteams.sstrain.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -19,12 +19,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.snackstudio.sstrain.assets.Assets;
-import com.snackstudio.sstrain.config.GlobalConfiguration;
-import com.snackstudio.sstrain.controller.Crossfader;
-import com.snackstudio.sstrain.controller.SongLoader;
-import com.snackstudio.sstrain.entities.Beatmap;
-import com.snackstudio.sstrain.entities.BeatmapGroup;
+import com.fteams.sstrain.assets.Assets;
+import com.fteams.sstrain.config.GlobalConfiguration;
+import com.fteams.sstrain.controller.Crossfader;
+import com.fteams.sstrain.controller.SongLoader;
+import com.fteams.sstrain.entities.Beatmap;
+import com.fteams.sstrain.entities.BeatmapGroup;
 
 @SuppressWarnings("unchecked")
 public class SongSelectionScreen implements Screen, InputProcessor {

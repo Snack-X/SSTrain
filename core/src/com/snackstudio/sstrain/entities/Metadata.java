@@ -1,4 +1,4 @@
-package com.snackstudio.sstrain.entities;
+package com.fteams.sstrain.entities;
 
 public class Metadata extends BaseMetadata{
     public String difficultyName;

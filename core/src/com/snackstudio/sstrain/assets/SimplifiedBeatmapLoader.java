@@ -1,4 +1,4 @@
-package com.snackstudio.sstrain.assets;
+package com.fteams.sstrain.assets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
@@ -8,10 +8,10 @@ import com.badlogic.gdx.assets.loaders.AsynchronousAssetLoader;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
-import com.snackstudio.sstrain.entities.Beatmap;
-import com.snackstudio.sstrain.entities.Metadata;
-import com.snackstudio.sstrain.entities.Note;
-import com.snackstudio.sstrain.util.SongUtils;
+import com.fteams.sstrain.entities.Beatmap;
+import com.fteams.sstrain.entities.Metadata;
+import com.fteams.sstrain.entities.Note;
+import com.fteams.sstrain.util.SongUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

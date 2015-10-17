@@ -1,8 +1,8 @@
-package com.snackstudio.sstrain.entities;
+package com.fteams.sstrain.entities;
 
 import com.badlogic.gdx.utils.Array;
-import com.snackstudio.sstrain.config.GlobalConfiguration;
-import com.snackstudio.sstrain.util.SongUtils;
+import com.fteams.sstrain.config.GlobalConfiguration;
+import com.fteams.sstrain.util.SongUtils;
 
 public class BeatmapGroup implements Comparable<BeatmapGroup>{
     public BaseMetadata metadata;

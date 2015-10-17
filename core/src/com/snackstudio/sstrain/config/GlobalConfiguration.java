@@ -1,8 +1,8 @@
-package com.snackstudio.sstrain.config;
+package com.fteams.sstrain.config;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.snackstudio.sstrain.util.SongUtils;
+import com.fteams.sstrain.util.SongUtils;
 
 public class GlobalConfiguration {
 
@@ -38,7 +38,6 @@ public class GlobalConfiguration {
         // sync mode
         syncMode = prefs.getInteger("sync_mode", SongUtils.SYNC_MODE_1);
 
-        System.out.println("PathToBeatmaps : " + pathToBeatmaps);
     }
 
     public static void storeConfiguration() {
