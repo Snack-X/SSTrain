@@ -58,6 +58,7 @@ public class World {
 //        System.out.println("Loaded: " + circles.size + " notes");
 
         linkCircles(circles);
+        circles.sort();
 
         int zoneId = 1;
         tapZones = new Array<>();
@@ -71,6 +72,7 @@ public class World {
             TapZone zone = new TapZone(x, -249.0f, zoneId++);
             tapZones.add(zone);
         }
+        tapZones.sort();
         this.accuracyMarkers = new Array<>();
         this.accuracyPopups = new Array<>();
         paused = false;
@@ -82,9 +84,9 @@ public class World {
             if (current.note.nextNoteId == 0)
                 continue;
 
-            current.nextNote = circles.get(current.note.nextNoteId.intValue() - 1);
+            current.setNextNote(circles.get(current.note.nextNoteId.intValue() - 1));
             // 2 side relation
-            current.nextNote.previousNote = current;
+            current.nextNote.setPreviousNote(current);
         }
     }
 

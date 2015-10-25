@@ -246,14 +246,14 @@ public class WorldController implements Music.OnCompletionListener {
         List<Float> high = new ArrayList<>();
         List<Float> low = new ArrayList<>();
         for (AccuracyMarker hit : world.getAccuracyMarkers()) {
-            sum += (-hit.getTime());
+            sum += hit.getTime();
         }
         float average = sum / world.getAccuracyMarkers().size;
         for (AccuracyMarker value : world.getAccuracyMarkers()) {
-            if (-value.getTime() >= average) {
-                high.add(-value.getTime());
+            if (value.getTime() >= average) {
+                high.add(value.getTime());
             } else {
-                low.add(-value.getTime());
+                low.add(value.getTime());
             }
         }
 
@@ -449,7 +449,7 @@ public class WorldController implements Music.OnCompletionListener {
         int matchedId = -1;
         for (TapZone zone : tapZones) {
             float x = zone.getPosition().x;
-            if (x - 2 * circleRadius < relativeX && relativeX < x + 2 * circleRadius && relativeY < -200) {
+            if (x - 2 * circleRadius < relativeX && relativeX < x + 2 * circleRadius && relativeY < -125) {
                 matchedId = zone.getId();
                 zone.pressed = true;
                 pointerToZoneId.put(pointer, matchedId);
@@ -466,8 +466,9 @@ public class WorldController implements Music.OnCompletionListener {
                 continue;
             }
             // swiped notes don't register on hit.
-            if (!mark.note.status.equals(SongUtils.NOTE_NO_SWIPE))
-                continue;
+            if (!mark.note.status.equals(SongUtils.NOTE_NO_SWIPE) && mark.destination == matchedId) {
+                break;
+            }
 
             if (mark.destination == (matchedId)) {
                 Accuracy accuracy = mark.hit();
@@ -512,7 +513,9 @@ public class WorldController implements Music.OnCompletionListener {
                     playTapSoundForAccuracy(accuracy);
                 }
                 accuracyPopups.add(new AccuracyPopup(accuracy, mark.hitTime < 0));
-                accuracyMarkers.add(new AccuracyMarker(mark.hitTime));
+                if (accuracy != Accuracy.MISS) {
+                    accuracyMarkers.add(new AccuracyMarker(mark.hitTime));
+                }
                 processAccuracy(mark.accuracy, null, false);
                 accuracyList.add(accuracy);
                 // 1 mark per release
@@ -539,7 +542,7 @@ public class WorldController implements Music.OnCompletionListener {
         if (done && !hasMusic) {
             this.onCompletion(null);
         }
-        if (time > Assets.selectedBeatmap.metadata.duration) {
+        if (time > Assets.selectedBeatmap.metadata.duration + world.delay) {
             if (!hasMusic)
                 this.onCompletion(null);
         }
@@ -562,26 +565,6 @@ public class WorldController implements Music.OnCompletionListener {
         }
     }
 
-    private int getTapZoneForCoordinatesNoMarking(float screenX, float screenY, float ppuX, float ppuY, int width, int height, int pointer) {
-        float centerX = world.offsetX + width / 2;
-        float centerY = world.offsetY + height * 0.20f;
-
-        float relativeX = (screenX - centerX) / ppuX;
-        float relativeY = (-screenY + centerY) / ppuY;
-
-        float circleRadius = 400 * 0.065f;
-
-        int matchedId = -1;
-        for (TapZone zone : tapZones) {
-            float x = zone.getPosition().x;
-            if (x - circleRadius < relativeX && relativeX < x + circleRadius && relativeY < -200) {
-                matchedId = zone.getId();
-                break;
-            }
-        }
-        return matchedId;
-    }
-
     public void dragged(int screenX, int screenY, int pointer, float ppuX, float ppuY, int width, int height) {
         Vector2 coords = pointerToCoordinates.get(pointer);
         if (coords == null) {
@@ -592,28 +575,32 @@ public class WorldController implements Music.OnCompletionListener {
             // first entry - just register the position.
             return;
         }
-        int matchedId = getTapZoneForCoordinatesNoMarking(coords.x, coords.y, ppuX, ppuY, width, height, pointer);
+        float centerX = world.offsetX + width / 2;
+        float centerY = world.offsetY + height * 0.20f;
 
-        if (matchedId == -1) {
-            coords.x = screenX;
-            coords.y = screenY;
-            return;
-        }
+        float relativeBeforeX = (coords.x - centerX) / ppuX;
+        float relativeAfterX = (screenX - centerX) / ppuX;
+        float relativeY = (-screenY + centerY) / ppuY;
 
-        // after
-        int matchedId2 = getTapZoneForCoordinatesNoMarking(screenX, screenY, ppuX, ppuY, width, height, pointer);
+        float circleRadius = 400 * 0.065f;
 
-        if (matchedId == matchedId2) {
-            // we haven't left the zone
-            return;
-        }
-        if (coords.x < screenX) {
-            swipeRight(matchedId);
-//            System.out.println("Swipe Right");
-        } else {
-            swipeLeft(matchedId);
-//            System.out.println("Swipe Left");
 
+        for (TapZone zone : tapZones) {
+            // /-----TAPZONE------\
+            // |----|--------|----|
+            //     LST      RST
+            // LST: Left Swipe Trigger
+            // RST: Right Swipe Trigger
+            if (relativeBeforeX < zone.getPosition().x + circleRadius / 2
+                    && zone.getPosition().x + circleRadius / 2 < relativeAfterX
+                    && relativeY < -125) {
+                swipeRight(zone.getId());
+            } else if (relativeBeforeX > zone.getPosition().x - circleRadius / 2
+                    && zone.getPosition().x - circleRadius / 2 > relativeAfterX
+                    && relativeY < -125) {
+                swipeLeft(zone.getId());
+            }
+            // else do nothing since we're swiping the same side
         }
 
         coords.x = screenX;
@@ -624,6 +611,11 @@ public class WorldController implements Music.OnCompletionListener {
         for (Circle mark : circles) {
             if (!mark.waiting) {
                 continue;
+            }
+            if (mark.destination == matchedId && (mark.note.status.equals(SongUtils.NOTE_NO_SWIPE)|| mark.note.status.equals(SongUtils.NOTE_SWIPE_RIGHT))) {
+                // we know the notes are in time order so, if the previous note was a tap and wasn't tapped, we ignore the swipe.
+                // or there's a swipe in the other direction on the same lane
+                break;
             }
             if (mark.note.status.equals(SongUtils.NOTE_SWIPE_LEFT)) {
                 if (mark.destination == (matchedId)) {
@@ -649,6 +641,11 @@ public class WorldController implements Music.OnCompletionListener {
         for (Circle mark : circles) {
             if (!mark.waiting) {
                 continue;
+            }
+            if (mark.destination == matchedId && (mark.note.status.equals(SongUtils.NOTE_NO_SWIPE) || mark.note.status.equals(SongUtils.NOTE_SWIPE_LEFT))) {
+                // we know the notes are in time order so, if the previous note was a tap and wasn't tapped, we ignore the swipe.
+                // or there's a swipe in the other direction on the same lane
+                break;
             }
             if (mark.note.status.equals(SongUtils.NOTE_SWIPE_RIGHT)) {
                 if (mark.destination == (matchedId)) {

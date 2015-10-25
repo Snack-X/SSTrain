@@ -63,6 +63,7 @@ public class WorldRenderer {
     TextureRegion perfectMark;
 
     BitmapFont font;
+    BitmapFont songFont;
 
     GlyphLayout layout;
 
@@ -135,6 +136,7 @@ public class WorldRenderer {
         perfectMark = atlas.findRegion("perfect");
 
         font = Assets.font;
+        songFont = Assets.songFont;
     }
 
     public void render() {
@@ -170,15 +172,19 @@ public class WorldRenderer {
     private void drawAccuracyBar() {
         float centerX = this.positionOffsetX + width / 2;
         float y = this.positionOffsetY + height - height * 0.1f;
-        float zone = (SongUtils.getSpeedFromConfig(GlobalConfiguration.noteSpeed)) * 0.5f / 2000f;
+        float bad = (float)(SongUtils.overallDiffBad[GlobalConfiguration.overallDifficulty ] * 1f);
+        float nice = (float)(SongUtils.overallDiffNice[GlobalConfiguration.overallDifficulty ] * 1f);
+        float great = (float)(SongUtils.overallDiffGreat[GlobalConfiguration.overallDifficulty ] * 1f);
+        float perfect = (float)(SongUtils.overallDiffPerfect[GlobalConfiguration.overallDifficulty ] * 1f);
+        float zone = bad/1000f;
         // draw the background (bad level)
         spriteBatch.draw(accBadBackground, centerX - width / 6f, y, width / 3f, height * 0.01f);
         // draw the background (good level)
-        spriteBatch.draw(accGoodBackground, centerX - 0.8f * width / 6f, y, 0.8f * width / 3f, height * 0.01f);
+        spriteBatch.draw(accGoodBackground, centerX - nice/bad * width / 6f, y, nice/bad * width / 3f, height * 0.01f);
         // draw the background (great level)
-        spriteBatch.draw(accGreatBackground, centerX - 0.70f * width / 6f, y, 0.7f * width / 3f, height * 0.01f);
+        spriteBatch.draw(accGreatBackground, centerX - great/bad * width / 6f, y, great/bad * width / 3f, height * 0.01f);
         // draw the background (perfect level)
-        spriteBatch.draw(accPerfectBackground, centerX - 0.4f * width / 6f, y, 0.4f * width / 3f, height * 0.01f);
+        spriteBatch.draw(accPerfectBackground, centerX - perfect/bad * width / 6f, y, perfect/bad * width / 3f, height * 0.01f);
         // draw each of the 'markers'
         for (AccuracyMarker accMarker : world.getAccuracyMarkers()) {
             if (accMarker.display) {
@@ -194,22 +200,22 @@ public class WorldRenderer {
         String tapToBegin = "Tap to begin!";
         float centerX = this.positionOffsetX + width / 2;
         float centerY = this.positionOffsetY + height / 2 + height * 0.15f;
-        layout.setText(font, tapToBegin);
-        font.draw(spriteBatch, tapToBegin, centerX - layout.width / 2, centerY - layout.height / 2);
+        layout.setText(songFont, tapToBegin);
+        songFont.draw(spriteBatch, tapToBegin, centerX - layout.width / 2, centerY - layout.height / 2);
     }
 
     private void drawTapToContinue() {
         String tapToBegin = "Tap to continue!";
         float centerX = this.positionOffsetX + width / 2;
         float centerY = this.positionOffsetY + height / 2 + height * 0.15f;
-        layout.setText(font, tapToBegin);
-        font.draw(spriteBatch, tapToBegin, centerX - layout.width / 2, centerY - layout.height / 2);
+        layout.setText(songFont, tapToBegin);
+        songFont.draw(spriteBatch, tapToBegin, centerX - layout.width / 2, centerY - layout.height / 2);
 
         String backToExit = "Or press back again to skip to the Results screen.";
         centerX = this.positionOffsetX + width / 2;
         centerY = this.positionOffsetY + height / 2 + height * 0.1f;
-        layout.setText(font, backToExit);
-        font.draw(spriteBatch, backToExit, centerX - layout.width / 2, centerY - layout.height / 2);
+        layout.setText(songFont, backToExit);
+        songFont.draw(spriteBatch, backToExit, centerX - layout.width / 2, centerY - layout.height / 2);
     }
 
     private void drawAccuracy() {
@@ -295,7 +301,7 @@ public class WorldRenderer {
             else
                 spriteBatch.setColor(c.r, c.g, c.b, alpha * alpha * 1f * 0.45f);
 
-            if (mark.nextNote != null) {
+            if (mark.nextNote != null && !mark.nextNote.isDone()) {
                 Vector2 org = mark.nextNote.position.cpy();
                 org.x *= ppuX;
                 org.y *= ppuY;

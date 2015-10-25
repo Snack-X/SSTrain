@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.snackstudio.sstrain.assets.Assets;
 import com.snackstudio.sstrain.config.GlobalConfiguration;
 import com.snackstudio.sstrain.entities.Results;
+import com.snackstudio.sstrain.util.SongUtils;
 
 public class ResultsScreen implements Screen {
 
@@ -22,8 +23,12 @@ public class ResultsScreen implements Screen {
     private Texture texture = Assets.mainMenuBackgroundTexture;
     private Image splashImage = new Image(texture);
     private Table table = new Table();
-    private Label approachRateLabel = new Label("Note Speed (Approach Rate):", Assets.menuSkin, "song_style_result_values");
+    private Label difficulty = new Label("Difficulty:", Assets.menuSkin, "song_style_result_values");
+    private Label difficultyLabel;
+    private Label approachRateLabel = new Label("Approach Rate:", Assets.menuSkin, "song_style_result_values");
     private Label approachRateConfigLabel;
+    private Label overallDifficultyLabel = new Label("Overall Difficulty:", Assets.menuSkin, "song_style_result_values");
+    private Label overallDifficultyConfigLabel;
     private Label accuracyLabel = new Label("Avg. Accuracy:", Assets.menuSkin, "song_style_result_values");
     private Label accuracyResultLabel;
     private Label normalizedAccuracyLabel = new Label("% Accuracy:", Assets.menuSkin, "song_style_result_values");
@@ -44,7 +49,7 @@ public class ResultsScreen implements Screen {
     private Label missResultLabel;
     private Label comboLabel = new Label("Largest Combo:", Assets.menuSkin, "song_style_result_values");
     private Label comboResultLabel;
-    private Label titleLabel = new Label("Results/結果発表", Assets.menuSkin, "default");
+    private Label titleLabel = new Label("Results/結果発表", Assets.menuSkin, "results_title");
 
     @Override
     public void show() {
@@ -59,7 +64,10 @@ public class ResultsScreen implements Screen {
         titleLabel.setFontScale(fontScale);
 
         table.setFillParent(true);
-        approachRateConfigLabel = new Label("AR-"+GlobalConfiguration.noteSpeed, Assets.menuSkin, "song_style_result_values");
+
+        difficultyLabel = new Label(Assets.selectedBeatmap.metadata.difficulty == null ? Assets.selectedBeatmap.metadata.difficulty + "*" : Assets.selectedBeatmap.metadata.difficultyName, Assets.menuSkin, "song_style_result_values");
+        approachRateConfigLabel = new Label("AR-" + GlobalConfiguration.noteSpeed + " (" + SongUtils.getSpeedFromConfig(GlobalConfiguration.noteSpeed) + " ms)", Assets.menuSkin, "song_style_result_values");
+        overallDifficultyConfigLabel = new Label("OD-" + GlobalConfiguration.overallDifficulty + " (" + SongUtils.overallDiffBad[GlobalConfiguration.overallDifficulty] + " ms)", Assets.menuSkin, "song_style_result_values");
         accuracyResultLabel = new Label(String.format("%.2f", Results.accuracy * 1000) + " ms.", Assets.menuSkin, "song_style_result_values");
         accuracyRangeResultLabel = new Label(String.format("%.2f", Results.minAccuracy * 1000) + " ms. to " + String.format("%.2f", Results.maxAccuracy * 1000) + " ms.", Assets.menuSkin, "song_style_result_values");
         normalizedAccuracyResultLabel = new Label(String.format("%.2f", Results.normalizedAccuracy * 100f) + "%", Assets.menuSkin, "song_style_result_values");
@@ -69,9 +77,11 @@ public class ResultsScreen implements Screen {
         goodResultLabel = new Label(Integer.toString(Results.goods), Assets.menuSkin, "song_style_result_values");
         greatResultLabel = new Label(Integer.toString(Results.greats), Assets.menuSkin, "song_style_result_values");
         perfectResultLabel = new Label(Integer.toString(Results.perfects), Assets.menuSkin, "song_style_result_values");
-        comboResultLabel = new Label(Integer.toString(Results.combo) + (Results.combo == Assets.selectedBeatmap.notes.size() ?" (FC)" : ""), Assets.menuSkin, "song_style_result_values");
+        comboResultLabel = new Label(Integer.toString(Results.combo) + (Results.combo == Assets.selectedBeatmap.notes.size() ? " (FC)" : ""), Assets.menuSkin, "song_style_result_values");
 
+        difficulty.setFontScale(fontScale);
         approachRateConfigLabel.setFontScale(fontScale);
+        overallDifficultyConfigLabel.setFontScale(fontScale);
         accuracyResultLabel.setFontScale(fontScale);
         accuracyRangeResultLabel.setFontScale(fontScale);
         normalizedAccuracyResultLabel.setFontScale(fontScale);
@@ -83,7 +93,9 @@ public class ResultsScreen implements Screen {
         perfectResultLabel.setFontScale(fontScale);
         comboResultLabel.setFontScale(fontScale);
 
+        difficultyLabel.setFontScale(fontScale);
         approachRateLabel.setFontScale(fontScale);
+        overallDifficultyLabel.setFontScale(fontScale);
         accuracyLabel.setFontScale(fontScale);
         accuracyRangeLabel.setFontScale(fontScale);
         normalizedAccuracyLabel.setFontScale(fontScale);
@@ -95,19 +107,25 @@ public class ResultsScreen implements Screen {
         greatLabel.setFontScale(fontScale);
         comboLabel.setFontScale(fontScale);
 
-        Label songResultTitle = new Label(Assets.selectedBeatmap.metadata.songName.replaceAll("\\\\n", " "), Assets.menuSkin, "song_result_song_title");
+        Label songResultTitle = new Label(Assets.selectedBeatmap.metadata.songName.replaceAll("\\\\n", " "), Assets.menuSkin, "results_song_title");
         songResultTitle.setFontScale(fontScale);
-
 
         table.add(songResultTitle).colspan(3).row();
         table.add(titleLabel).colspan(3).padBottom(stage.getHeight() * 0.04f).row();
-        table.add(comboLabel).fillX();
+
+        table.add(difficulty).fillX();
+        table.add().width(stage.getWidth() * 0.2f);
+        table.add(difficultyLabel).fillX().row();
+        table.add(comboLabel).fillX().padBottom(20);
         table.add().width(stage.getWidth() * 0.2f).padBottom(20);
         table.add(comboResultLabel).fillX().padBottom(20).row();
 
         table.add(approachRateLabel).fillX();
         table.add().width(stage.getWidth() * 0.2f);
         table.add(approachRateConfigLabel).fillX().row();
+        table.add(overallDifficultyLabel).fillX();
+        table.add().width(stage.getWidth() * 0.2f);
+        table.add(overallDifficultyConfigLabel).fillX().row();
         table.add(normalizedAccuracyLabel).fillX();
         table.add().width(stage.getWidth() * 0.2f);
         table.add(normalizedAccuracyResultLabel).fillX().row();
