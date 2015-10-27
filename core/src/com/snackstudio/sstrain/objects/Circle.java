@@ -22,6 +22,7 @@ public class Circle implements Comparable<Circle> {
     Double speed;
     public Circle nextNote;
     public Circle previousNote;
+    public Circle nextSyncNote;
 
     float spawnTime;
     float despawnTime;
@@ -224,7 +225,8 @@ public class Circle implements Comparable<Circle> {
     public Accuracy release() {
 //        System.out.println("R>" + note.id);
         // if a non-hold is released it it counts as a miss.
-        if (!hold || !note.status.equals(SongUtils.NOTE_NO_SWIPE)) {
+        // some songs have notes with type 1 and status != 0 for release so we check if the previous note was a hold
+        if (previousNote != null && previousNote.hold && !note.status.equals(SongUtils.NOTE_NO_SWIPE)) {
             accuracy = Accuracy.MISS;
             miss = true;
             visible = false;
@@ -330,8 +332,8 @@ public class Circle implements Comparable<Circle> {
         if (o == null)
             return 1;
         // if the notes have the same timing, sort them by destination
-        if (0 == Double.compare(note.timing, o.note.timing)) {
-            return Long.compare(destination, o.destination);
+        if (note.timing.equals(o.note.timing)) {
+            return Long.compare(note.endPos, o.note.endPos);
         }
 
         return Double.compare(note.timing, o.note.timing);

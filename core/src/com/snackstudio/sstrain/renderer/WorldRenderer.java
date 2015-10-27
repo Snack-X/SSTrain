@@ -172,19 +172,19 @@ public class WorldRenderer {
     private void drawAccuracyBar() {
         float centerX = this.positionOffsetX + width / 2;
         float y = this.positionOffsetY + height - height * 0.1f;
-        float bad = (float)(SongUtils.overallDiffBad[GlobalConfiguration.overallDifficulty ] * 1f);
-        float nice = (float)(SongUtils.overallDiffNice[GlobalConfiguration.overallDifficulty ] * 1f);
-        float great = (float)(SongUtils.overallDiffGreat[GlobalConfiguration.overallDifficulty ] * 1f);
-        float perfect = (float)(SongUtils.overallDiffPerfect[GlobalConfiguration.overallDifficulty ] * 1f);
-        float zone = bad/1000f;
+        float bad = (float) (SongUtils.overallDiffBad[GlobalConfiguration.overallDifficulty] * 1f);
+        float nice = (float) (SongUtils.overallDiffNice[GlobalConfiguration.overallDifficulty] * 1f);
+        float great = (float) (SongUtils.overallDiffGreat[GlobalConfiguration.overallDifficulty] * 1f);
+        float perfect = (float) (SongUtils.overallDiffPerfect[GlobalConfiguration.overallDifficulty] * 1f);
+        float zone = bad / 1000f;
         // draw the background (bad level)
         spriteBatch.draw(accBadBackground, centerX - width / 6f, y, width / 3f, height * 0.01f);
         // draw the background (good level)
-        spriteBatch.draw(accGoodBackground, centerX - nice/bad * width / 6f, y, nice/bad * width / 3f, height * 0.01f);
+        spriteBatch.draw(accGoodBackground, centerX - nice / bad * width / 6f, y, nice / bad * width / 3f, height * 0.01f);
         // draw the background (great level)
-        spriteBatch.draw(accGreatBackground, centerX - great/bad * width / 6f, y, great/bad * width / 3f, height * 0.01f);
+        spriteBatch.draw(accGreatBackground, centerX - great / bad * width / 6f, y, great / bad * width / 3f, height * 0.01f);
         // draw the background (perfect level)
-        spriteBatch.draw(accPerfectBackground, centerX - perfect/bad * width / 6f, y, perfect/bad * width / 3f, height * 0.01f);
+        spriteBatch.draw(accPerfectBackground, centerX - perfect / bad * width / 6f, y, perfect / bad * width / 3f, height * 0.01f);
         // draw each of the 'markers'
         for (AccuracyMarker accMarker : world.getAccuracyMarkers()) {
             if (accMarker.display) {
@@ -197,7 +197,7 @@ public class WorldRenderer {
     }
 
     private void drawTapToBeginMessage() {
-        String tapToBegin = "Tap to begin!";
+        String tapToBegin = "Tap to begin!" + (GlobalConfiguration.playbackMode != null && GlobalConfiguration.playbackMode.equals(SongUtils.GAME_MODE_ABREPEAT) ? " To exit in A-B Repeat Mode, tap back twice.": "");
         float centerX = this.positionOffsetX + width / 2;
         float centerY = this.positionOffsetY + height / 2 + height * 0.15f;
         layout.setText(songFont, tapToBegin);
@@ -320,6 +320,25 @@ public class WorldRenderer {
                 drawHoldBeam(org, dst, size, size);
             }
 
+            if (!mark.note.sync.equals(0L)) {
+                Circle mark2 = mark.nextSyncNote;
+                // we only check ahead if we  got the same note, we don't want overlapping beams
+                // draw beams only if neither note has been ever hit
+                if (mark2 != null && mark.accuracy == null && mark2.accuracy == null) {
+                    Vector2 org = mark2.position.cpy();
+                    org.x *= ppuX;
+                    org.y *= ppuY;
+                    org.x += centerX;
+                    org.y += centerY;
+
+                    Vector2 dst = mark.position.cpy();
+                    dst.x *= ppuX;
+                    dst.y *= ppuY;
+                    dst.x += centerX;
+                    dst.y += centerY;
+                    drawHoldBeam(org, dst, size * 0.1f, size * 0.1f);
+                }
+            }
             if (mark.visible) {
 
                 spriteBatch.setColor(c.r, c.g, c.b, alpha);
@@ -372,7 +391,6 @@ public class WorldRenderer {
             } else if (note.status.equals(SongUtils.NOTE_SWIPE_RIGHT)) {
                 return circleSwipeRightSim;
             }
-            // TODO: Notes in sync (simultaneous) are linked by a horizontal beam.
         } else if (note.sync.intValue() == SongUtils.NOTE_SYNC_OFF) {
             if (note.status.equals(SongUtils.NOTE_NO_SWIPE)) {
                 return circle;
