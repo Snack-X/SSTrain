@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
+import com.snackstudio.sstrain.config.GlobalConfiguration;
 import com.snackstudio.sstrain.entities.BaseMetadata;
 import com.snackstudio.sstrain.entities.Beatmap;
 import com.snackstudio.sstrain.entities.BeatmapGroup;
@@ -27,9 +28,6 @@ public class Assets {
     static {
         externalManager.setLoader(List.class, new SimplifiedBeatmapLoader(new ExternalFileHandleResolver()));
     }
-
-    public static final String BEATMAP_HOME = "sstrain/beatmaps/";
-    public static final String SOUNDFILES_HOME = "sstrain/soundfiles/";
 
     public static Beatmap selectedBeatmap;
     public static BeatmapGroup selectedGroup;
@@ -77,19 +75,18 @@ public class Assets {
     // thanks to libgdx, the manager will not actually load maps which were already loaded,
     // so if the same file comes again, it will be skipped
     public static void reloadBeatmaps() {
-        if (Gdx.files.absolute(Gdx.files.getExternalStoragePath() + BEATMAP_HOME).exists()) {
-            for (String fileName : Gdx.files.absolute(Gdx.files.getExternalStoragePath() + BEATMAP_HOME).file().list()) {
-                String fullPath = Gdx.files.getExternalStoragePath() + BEATMAP_HOME + fileName;
+        if (Gdx.files.absolute(GlobalConfiguration.pathToBeatmaps).exists()) {
+            for (String fileName : Gdx.files.absolute(GlobalConfiguration.pathToBeatmaps).file().list()) {
+                String fullPath = GlobalConfiguration.pathToBeatmaps + fileName;
                 // if for any reason the user placed .osu/.osz files in the datafiles, we process them
                 if (Gdx.files.absolute(fullPath).isDirectory() || (!fileName.endsWith(".json")))
                     continue;
 
-                externalManager.load(BEATMAP_HOME + fileName, List.class);
+                externalManager.load(GlobalConfiguration.beatmapPath + fileName, List.class);
             }
         } else {
-            (Gdx.files.absolute(Gdx.files.getExternalStoragePath() + "beatmaps")).mkdirs();
-            (Gdx.files.absolute(Gdx.files.getExternalStoragePath() + BEATMAP_HOME)).mkdirs();
-            (Gdx.files.absolute(Gdx.files.getExternalStoragePath() + SOUNDFILES_HOME)).mkdirs();
+            Gdx.files.absolute(GlobalConfiguration.pathToBeatmaps).mkdirs();
+            Gdx.files.absolute(GlobalConfiguration.pathToSoundfiles).mkdirs();
         }
     }
 

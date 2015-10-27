@@ -89,8 +89,8 @@ public class SplashScreen implements Screen {
         // or convert .osu files, which is why after the first pass is completed,
         // we update the set of loaded maps to include the recently extracted maps
         // if nothing was installed or changed, the second phase won't last long.
-        Assets.queueLoading();
         GlobalConfiguration.loadConfiguration();
+        Assets.queueLoading();
     }
 
     @Override
