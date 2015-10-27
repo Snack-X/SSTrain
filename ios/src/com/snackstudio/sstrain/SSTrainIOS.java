@@ -7,7 +7,7 @@ import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
 import com.snackstudio.sstrain.SSTrain;
 
-public class IOSLauncher extends IOSApplication.Delegate {
+public class SSTrainIOS extends IOSApplication.Delegate {
     @Override
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
@@ -16,7 +16,7 @@ public class IOSLauncher extends IOSApplication.Delegate {
 
     public static void main(String[] argv) {
         NSAutoreleasePool pool = new NSAutoreleasePool();
-        UIApplication.main(argv, null, IOSLauncher.class);
+        UIApplication.main(argv, null, SSTrainIOS.class);
         pool.close();
     }
 }

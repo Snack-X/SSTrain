@@ -7,7 +7,7 @@ import com.snackstudio.sstrain.util.SongUtils;
 public class GlobalConfiguration {
 
     // package info
-    public static String appVersionName = "1.0.0";
+    public static String appVersionName = "0.9.0";
 
     public static int songVolume;
     public static int feedbackVolume;
