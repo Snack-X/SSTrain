@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -75,18 +76,13 @@ public class Assets {
     // thanks to libgdx, the manager will not actually load maps which were already loaded,
     // so if the same file comes again, it will be skipped
     public static void reloadBeatmaps() {
-        if (Gdx.files.absolute(GlobalConfiguration.pathToBeatmaps).exists()) {
-            for (String fileName : Gdx.files.absolute(GlobalConfiguration.pathToBeatmaps).file().list()) {
-                String fullPath = GlobalConfiguration.pathToBeatmaps + fileName;
-                // if for any reason the user placed .osu/.osz files in the datafiles, we process them
-                if (Gdx.files.absolute(fullPath).isDirectory() || (!fileName.endsWith(".json")))
-                    continue;
+        for(FileHandle file : Gdx.files.external(GlobalConfiguration.externalDataPath).list()) {
+            String fileName = file.name();
+            // if for any reason the user placed .osu/.osz files in the datafiles, we process them
+            if (Gdx.files.external(GlobalConfiguration.externalDataPath + fileName).isDirectory() || (!fileName.endsWith(".json")))
+                continue;
 
-                externalManager.load(GlobalConfiguration.beatmapPath + fileName, List.class);
-            }
-        } else {
-            Gdx.files.absolute(GlobalConfiguration.pathToBeatmaps).mkdirs();
-            Gdx.files.absolute(GlobalConfiguration.pathToSoundfiles).mkdirs();
+            externalManager.load(GlobalConfiguration.externalDataPath + fileName, List.class);
         }
     }
 

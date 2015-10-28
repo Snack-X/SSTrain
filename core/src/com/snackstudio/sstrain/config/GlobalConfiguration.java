@@ -19,10 +19,8 @@ public class GlobalConfiguration {
     public static int overallDifficulty;
 
     // paths
-    public static String beatmapPath = "sstrain/beatmaps/";
-    public static String soundfilePath = "sstrain/beatmaps/";
-    public static String pathToBeatmaps;
-    public static String pathToSoundfiles;
+    public static String internalDataPath = "default/";
+    public static String externalDataPath = "/";
 
     public static boolean playHintSounds;
     public static int sortOrder;
@@ -47,8 +45,6 @@ public class GlobalConfiguration {
         inputOffset = prefs.getInteger("input_offset", 0);
         songVolume = prefs.getInteger("song_vol", 100);
         feedbackVolume = prefs.getInteger("feedback_vol", 100);
-        pathToBeatmaps = prefs.getString("path_to_beatmaps", Gdx.files.getExternalStoragePath() + beatmapPath);
-        pathToSoundfiles = prefs.getString("path_to_soundfiles", Gdx.files.getExternalStoragePath() + soundfilePath);
         playHintSounds = prefs.getBoolean("play_hint_sounds", false);
         noteSpeed = prefs.getInteger("note_speed", 6);
         overallDifficulty = prefs.getInteger("overall_difficulty", 7);
@@ -67,8 +63,6 @@ public class GlobalConfiguration {
         prefs.putInteger("input_offset", inputOffset);
         prefs.putInteger("song_vol", songVolume);
         prefs.putInteger("feedback_vol", feedbackVolume);
-        prefs.putString("path_to_beatmaps", pathToBeatmaps);
-        prefs.putString("path_to_soundfiles", pathToSoundfiles);
         prefs.putBoolean("play_hint_sounds", playHintSounds);
         prefs.putInteger("note_speed", noteSpeed);
         prefs.putInteger("overall_difficulty", overallDifficulty);

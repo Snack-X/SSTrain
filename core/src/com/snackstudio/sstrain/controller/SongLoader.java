@@ -12,16 +12,16 @@ public class SongLoader {
     public static Music loadSongByName(String name) {
         try {
             // try loading the file
-            FileHandle handle = Gdx.files.absolute(GlobalConfiguration.pathToSoundfiles + name);
+            FileHandle handle = Gdx.files.external(GlobalConfiguration.externalDataPath + name);
             return Gdx.audio.newMusic(handle);
         } catch(Exception e) {
             // if it failed, try loading the file with a different extension (in case the extension was not specified)
             FileHandle handle = null;
-            String path = GlobalConfiguration.pathToSoundfiles + name.replaceAll("\\.[a-zA-Z0-9]+$","");
+            String path = GlobalConfiguration.externalDataPath + name.replaceAll("\\.[a-zA-Z0-9]+$","");
 
             for(String ext : SONGFILE_PRIO) {
                 try {
-                    handle = Gdx.files.absolute(path + ext);
+                    handle = Gdx.files.external(path + ext);
                     return Gdx.audio.newMusic(handle);
                 } catch(Exception e2) {
                     continue;

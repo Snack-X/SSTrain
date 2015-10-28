@@ -72,8 +72,6 @@ public class SettingsScreen extends ChangeListener implements Screen, InputProce
 
     private final static boolean DEBUG = false;
 
-    private Label pathValueLabel = new Label(GlobalConfiguration.pathToBeatmaps, Assets.menuSkin, "song_style_result");
-
     private TextButton returnButton = new TextButton("Save and Return", Assets.menuSkin, "item1");
     private TextButton reloadBeatmaps = new TextButton("Reload Beatmaps!", Assets.menuSkin, "item1");
 
@@ -270,11 +268,6 @@ public class SettingsScreen extends ChangeListener implements Screen, InputProce
 
         content.add(offsetTable);
 
-
-        // extras - path to beatmaps
-        pathToBeatmaps.setFontScale(fontScale);
-        pathValueLabel.setFontScale(fontScale);
-
         // extras - sorting mode
         sortingModeChooser = new CheckBox("Sorting Mode: " + sortingModes[GlobalConfiguration.sortMode], Assets.menuSkin);
         sortingModeChooser.getLabel().setFontScale(fontScale);
@@ -291,8 +284,6 @@ public class SettingsScreen extends ChangeListener implements Screen, InputProce
         otherTable.setHeight(stage.getHeight() * 0.7f);
         otherTable.setWidth(stage.getWidth() * 0.6f);
 
-        otherTable.add(pathToBeatmaps).width(stage.getWidth() * 0.6f).padTop(stage.getHeight() * 0.01f).padBottom(stage.getHeight() * 0.01f).fillX().left().row();
-        otherTable.add(pathValueLabel).padTop(stage.getHeight() * 0.01f).padBottom(stage.getHeight() * 0.01f).fillX().left().padLeft(stage.getWidth() * 0.03f).row();
         otherTable.add(sortingModeChooser).padTop(stage.getHeight() * 0.01f).padBottom(stage.getHeight() * 0.01f).left().row();
         otherTable.add(sortingOrderChooser).padTop(stage.getHeight() * 0.01f).padBottom(stage.getHeight() * 0.01f).left().row();
         otherTable.add().expand().fill().row();
