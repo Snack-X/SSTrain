@@ -55,6 +55,6 @@
         </dict>
     </dict>
     <key>UIFileSharingEnabled</key>
-    <true></true>
+    <true />
 </dict>
 </plist>

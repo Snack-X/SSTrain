@@ -19,8 +19,10 @@ public class GlobalConfiguration {
     public static int overallDifficulty;
 
     // paths
-    public static String beatmapPath = "sstrain/beatmaps/";
-    public static String soundfilePath = "sstrain/beatmaps/";
+//    public static String beatmapPath = "sstrain/beatmaps/";
+//    public static String soundfilePath = "sstrain/soundfiles/";
+    public static String beatmapPath = "";
+    public static String soundfilePath = "";
     public static String pathToBeatmaps;
     public static String pathToSoundfiles;
 

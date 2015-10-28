@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -24,9 +25,11 @@ public class Assets {
 
     public static AssetManager internalManager = new AssetManager(new InternalFileHandleResolver());
     public static AssetManager externalManager = new AssetManager(new ExternalFileHandleResolver());
+    public static AssetManager defaultSongManager = new AssetManager(new InternalFileHandleResolver());
 
     static {
         externalManager.setLoader(List.class, new SimplifiedBeatmapLoader(new ExternalFileHandleResolver()));
+        defaultSongManager.setLoader(List.class, new SimplifiedBeatmapLoader(new InternalFileHandleResolver()));
     }
 
     public static Beatmap selectedBeatmap;
@@ -75,18 +78,26 @@ public class Assets {
     // thanks to libgdx, the manager will not actually load maps which were already loaded,
     // so if the same file comes again, it will be skipped
     public static void reloadBeatmaps() {
+        // Default songs
+        for (String fileName : Gdx.files.internal("default/").file().list()) {
+            String fullPath = "default/" + fileName;
+            if (Gdx.files.absolute(fullPath).isDirectory() || (!fileName.endsWith(".json")))
+                continue;
+            System.out.println("Default Load " + fullPath);
+            defaultSongManager.load(fullPath, List.class);
+        }
+
+        // User added songs
         if (Gdx.files.absolute(GlobalConfiguration.pathToBeatmaps).exists()) {
             for (String fileName : Gdx.files.absolute(GlobalConfiguration.pathToBeatmaps).file().list()) {
                 String fullPath = GlobalConfiguration.pathToBeatmaps + fileName;
-                // if for any reason the user placed .osu/.osz files in the datafiles, we process them
                 if (Gdx.files.absolute(fullPath).isDirectory() || (!fileName.endsWith(".json")))
                     continue;
-
+                System.out.println("External Load " + fullPath);
                 externalManager.load(GlobalConfiguration.beatmapPath + fileName, List.class);
             }
         } else {
             Gdx.files.absolute(GlobalConfiguration.pathToBeatmaps).mkdirs();
-            Gdx.files.absolute(GlobalConfiguration.pathToSoundfiles).mkdirs();
         }
     }
 
@@ -98,6 +109,7 @@ public class Assets {
         selectedBeatmap = null;
         selectedGroup = null;
         externalManager.clear();
+        defaultSongManager.clear();
         reloadBeatmaps();
     }
 
@@ -153,11 +165,17 @@ public class Assets {
             songGroup.clear();
         }
 
-        Array<String> assets = externalManager.getAssetNames();
+        _setSongs(defaultSongManager, true);
+        _setSongs(externalManager, false);
+    }
+
+    public static void _setSongs(AssetManager manager, boolean isDefault) {
+        Array<String> assets = manager.getAssetNames();
         Map<Long, BeatmapGroup> groupMap = new HashMap<>();
 
         for (String string : assets) {
-            List<Beatmap> beatmaps = externalManager.get(string, List.class);
+            System.out.println("asset name " + string);
+            List<Beatmap> beatmaps = manager.get(string, List.class);
             if (!beatmaps.isEmpty()) {
                 Metadata metadata = beatmaps.get(0).metadata;
                 Long liveId = metadata.id;
@@ -172,6 +190,7 @@ public class Assets {
                     group.metadata.attribute = metadata.attribute;
                     group.metadata.duration = metadata.duration;
                     group.beatmaps = new Array<>();
+                    group.isDefault = isDefault;
                     groupMap.put(liveId, group);
                 }
 

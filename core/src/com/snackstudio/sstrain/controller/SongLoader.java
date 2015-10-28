@@ -9,15 +9,23 @@ import com.snackstudio.sstrain.config.GlobalConfiguration;
 public class SongLoader {
     private static final String[] SONGFILE_PRIO = {".ogg", ".wav", ".mp3"};
 
-    public static Music loadSongByName(String name) {
+    public static Music loadSongByName(String name, boolean isDefault) {
+        String basePath;
+
+        if(isDefault) {
+            basePath = GlobalConfiguration.pathToSoundfiles;
+        } else {
+            basePath = Gdx.files.getLocalStoragePath() + "default/";
+        }
+
         try {
             // try loading the file
-            FileHandle handle = Gdx.files.absolute(GlobalConfiguration.pathToSoundfiles + name);
+            FileHandle handle = Gdx.files.absolute(basePath + name);
             return Gdx.audio.newMusic(handle);
         } catch(Exception e) {
             // if it failed, try loading the file with a different extension (in case the extension was not specified)
             FileHandle handle = null;
-            String path = GlobalConfiguration.pathToSoundfiles + name.replaceAll("\\.[a-zA-Z0-9]+$","");
+            String path = basePath + name.replaceAll("\\.[a-zA-Z0-9]+$","");
 
             for(String ext : SONGFILE_PRIO) {
                 try {
@@ -36,10 +44,10 @@ public class SongLoader {
         Music result = null;
 
         if(Assets.selectedBeatmap.metadata.songFile != null)
-            result = loadSongByName(Assets.selectedBeatmap.metadata.songFile);
+            result = loadSongByName(Assets.selectedBeatmap.metadata.songFile, Assets.selectedGroup.isDefault);
 
         if(result == null)
-            result = loadSongByName(Assets.selectedBeatmap.metadata.songName);
+            result = loadSongByName(Assets.selectedBeatmap.metadata.songName, Assets.selectedGroup.isDefault);
 
         return result;
     }

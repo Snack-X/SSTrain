@@ -33,7 +33,6 @@ public class SimplifiedBeatmapLoader extends AsynchronousAssetLoader<List, Simpl
     }
 
     private void loadAsyncStandard(AssetManager manager, String fileName, FileHandle file, BeatmapParameter parameter) {
-
         FileHandle handle = resolve(fileName);
         String jsonDefinition = handle.readString("UTF-8");
         Beatmap info;
