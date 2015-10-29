@@ -7,6 +7,7 @@ import com.snackstudio.sstrain.util.SongUtils;
 public class BeatmapGroup implements Comparable<BeatmapGroup>{
     public BaseMetadata metadata;
     public Array<Beatmap> beatmaps;
+    public boolean isDefault;
 
     public String toString()
     {

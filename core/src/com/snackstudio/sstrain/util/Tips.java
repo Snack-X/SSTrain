@@ -15,7 +15,7 @@ public class Tips {
             "Did you know you can play a small fragment of the song in the A-B Repeat mode?\nWarning: There may be sound sync problems, try different timestamps until something sticks!",
             "Did you know you can change the speed of a song to practice it in slo-mo? Try the changing the playback rate option after selecting a song.\nNote: Due to library limitations, music playback rate can't be changed so these attempts will have no music.",
             "Did you notice there's no ads in this app?",
-            "If you've enjoyed using this app, why not rate it on Google Play?"
+//            "If you've enjoyed using this app, why not rate it on Google Play?"
     };
 
     public static String getRandomTip()

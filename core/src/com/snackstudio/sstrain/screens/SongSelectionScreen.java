@@ -53,10 +53,10 @@ public class SongSelectionScreen implements Screen, InputProcessor {
         String musicFile = Assets.selectedGroup.metadata.songFile;
 
         if(musicFile != null)
-            previewMusic = SongLoader.loadSongByName(musicFile);
+            previewMusic = SongLoader.loadSongByName(musicFile, Assets.selectedGroup.isDefault);
 
         if(previewMusic == null)
-            previewMusic = SongLoader.loadSongByName(Assets.selectedGroup.metadata.songName);
+            previewMusic = SongLoader.loadSongByName(Assets.selectedGroup.metadata.songName, Assets.selectedGroup.isDefault);
 
         previewCrossfader.enqueue(previewMusic);
     }

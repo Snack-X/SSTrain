@@ -25,9 +25,11 @@ public class Assets {
 
     public static AssetManager internalManager = new AssetManager(new InternalFileHandleResolver());
     public static AssetManager externalManager = new AssetManager(new ExternalFileHandleResolver());
+    public static AssetManager defaultSongManager = new AssetManager(new InternalFileHandleResolver());
 
     static {
         externalManager.setLoader(List.class, new SimplifiedBeatmapLoader(new ExternalFileHandleResolver()));
+        defaultSongManager.setLoader(List.class, new SimplifiedBeatmapLoader(new InternalFileHandleResolver()));
     }
 
     public static Beatmap selectedBeatmap;
@@ -76,9 +78,18 @@ public class Assets {
     // thanks to libgdx, the manager will not actually load maps which were already loaded,
     // so if the same file comes again, it will be skipped
     public static void reloadBeatmaps() {
-        for(FileHandle file : Gdx.files.external(GlobalConfiguration.externalDataPath).list()) {
+        for (FileHandle file : Gdx.files.internal(GlobalConfiguration.internalDataPath).list()) {
             String fileName = file.name();
-            // if for any reason the user placed .osu/.osz files in the datafiles, we process them
+
+            if (Gdx.files.internal(GlobalConfiguration.internalDataPath + fileName).isDirectory() || (!fileName.endsWith(".json")))
+                continue;
+
+            defaultSongManager.load(GlobalConfiguration.internalDataPath + fileName, List.class);
+        }
+
+        for (FileHandle file : Gdx.files.external(GlobalConfiguration.externalDataPath).list()) {
+            String fileName = file.name();
+
             if (Gdx.files.external(GlobalConfiguration.externalDataPath + fileName).isDirectory() || (!fileName.endsWith(".json")))
                 continue;
 
@@ -94,6 +105,7 @@ public class Assets {
         selectedBeatmap = null;
         selectedGroup = null;
         externalManager.clear();
+        defaultSongManager.clear();
         reloadBeatmaps();
     }
 
@@ -141,7 +153,6 @@ public class Assets {
             perfectSwipeSound = internalManager.get("hitsounds/swipe_perfect.mp3");
     }
 
-    @SuppressWarnings("unchecked")
     public static void setSongs() {
         if (songGroup == null) {
             songGroup = new Array<>();
@@ -149,11 +160,16 @@ public class Assets {
             songGroup.clear();
         }
 
-        Array<String> assets = externalManager.getAssetNames();
+        _setSongs(defaultSongManager, true);
+        _setSongs(externalManager, false);
+    }
+
+    public static void _setSongs(AssetManager manager, boolean isDefault) {
+        Array<String> assets = manager.getAssetNames();
         Map<Long, BeatmapGroup> groupMap = new HashMap<>();
 
         for (String string : assets) {
-            List<Beatmap> beatmaps = externalManager.get(string, List.class);
+            List<Beatmap> beatmaps = manager.get(string, List.class);
             if (!beatmaps.isEmpty()) {
                 Metadata metadata = beatmaps.get(0).metadata;
                 Long liveId = metadata.id;
@@ -168,6 +184,7 @@ public class Assets {
                     group.metadata.attribute = metadata.attribute;
                     group.metadata.duration = metadata.duration;
                     group.beatmaps = new Array<>();
+                    group.isDefault = isDefault;
                     groupMap.put(liveId, group);
                 }
 
@@ -185,10 +202,10 @@ public class Assets {
     }
 
     public static boolean update() {
-        return internalManager.update() && externalManager.update();
+        return internalManager.update() && externalManager.update() && defaultSongManager.update();
     }
 
     public static float getProgress() {
-        return (internalManager.getProgress() + externalManager.getProgress()) / 2;
+        return (internalManager.getProgress() + externalManager.getProgress() + defaultSongManager.getProgress()) / 3;
     }
 }
